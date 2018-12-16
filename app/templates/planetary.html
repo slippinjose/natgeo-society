@@ -1,0 +1,19 @@
+<html>
+
+<head>
+	<script type='text/javascript' src='http://d3js.org/d3.v3.min.js'></script>
+	<script type='text/javascript' src='http://d3js.org/topojson.v1.min.js'></script>
+	<script type='text/javascript' src="{{ url_for('static', filename='js/planetary.min.js') }}"></script>
+</head>
+
+<body>
+	<canvas id='rotatingGlobe' width='850' height='850' style='width: 850; height: 850; cursor: move;'></canvas>
+
+
+	<script>
+		worldJson = "{{url_for('static', filename='json/world.json')}}";
+	</script>
+	<script type='text/javascript' src="{{ url_for('static', filename='js/index.js') }}"></script>
+</body>
+
+</html>
