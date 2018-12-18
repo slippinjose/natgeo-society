@@ -14,7 +14,7 @@ def planetary():
 
 @home_bp.route('/google_maps')
 def gmaps():
-    return render_template('gmaps.html')
+    return render_template('gmaps.html', google_maps_api_key=os.environ.get('GOOGLE_MAPS_API_KEY'))
 
 @home_bp.route('/mapbox')
 def mapbox():

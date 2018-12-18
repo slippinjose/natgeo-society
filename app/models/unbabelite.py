@@ -9,3 +9,5 @@ class Unbabelite(ModelMixin, db.Model):
     name = db.Column(db.String, nullable=True)
     country = db.Column(db.String, nullable=True)
     city = db.Column(db.String, nullable=True)
+    lat = db.Column(db.Float, nullable=True)
+    lng = db.Column(db.Float, nullable=True)
