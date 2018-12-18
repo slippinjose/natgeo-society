@@ -89,6 +89,12 @@ def drop_tables():
     drop_tables()
 
 
+@cli.command()
+def populate_unbabelites():
+    from app.handlers.unbabelites_handler import UnbabelitesHandler
+
+    UnbabelitesHandler.populate_unbabelites()
+
 
 if __name__ == "__main__":
     cli()
