@@ -1,4 +1,5 @@
 import logging
+import os
 
 from flask import Blueprint, render_template
 
@@ -14,3 +15,7 @@ def planetary():
 @home_bp.route('/google_maps')
 def gmaps():
     return render_template('gmaps.html')
+
+@home_bp.route('/mapbox')
+def mapbox():
+    return render_template('mapbox.html', mapbox_token=os.environ.get('MAPBOX_API_KEY'))
