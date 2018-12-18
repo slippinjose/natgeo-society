@@ -14,4 +14,4 @@ class Unbabelite(ModelMixin, db.Model):
 
     @property
     def coordinates(self):
-        return [self.lat, self.lng]
+        return {'lat': self.lat, 'lng': self.lng}
