@@ -28,4 +28,6 @@ def gmaps():
 def mapbox():
     unbabelites = UnbabelitesHandler.get_all()
 
-    return render_template('mapbox.html', mapbox_token=os.environ.get('MAPBOX_API_KEY'))
+    return render_template('mapbox.html',
+                           unbabelites=unbabelites.raw,
+                           mapbox_token=os.environ.get('MAPBOX_API_KEY'))
