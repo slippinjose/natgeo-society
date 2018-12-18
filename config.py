@@ -16,6 +16,9 @@ class BaseConfig(object):
     APP_ENV = os.environ.get("APP_ENV", "development")
     SECRET_KEY = os.environ.get("SECRET_KEY", "somesecret")
 
+    APP_DB = os.environ['APP_DB']
+    SQLALCHEMY_DATABASE_URI = os.environ['DATABASE_URL'] + APP_DB
+    SQLALCHEMY_TRACK_MODIFICATIONS = False
 
 
     RQ_DEFAULT_URL = RQ_REDIS_URL = os.environ.get('REDIS_URL')
