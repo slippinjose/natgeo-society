@@ -11,3 +11,7 @@ class Unbabelite(ModelMixin, db.Model):
     city = db.Column(db.String, nullable=True)
     lat = db.Column(db.Float, nullable=True)
     lng = db.Column(db.Float, nullable=True)
+
+    @property
+    def coordinates(self):
+        return [self.lat, self.lng]
