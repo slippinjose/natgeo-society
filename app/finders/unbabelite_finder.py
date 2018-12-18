@@ -6,3 +6,7 @@ class UnbabeliteFinder(object):
     @staticmethod
     def get_from_name(name):
         return Unbabelite.query.filter_by(name=name).all()
+
+    @staticmethod
+    def get_all():
+        return Unbabelite.query.all()

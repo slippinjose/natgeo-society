@@ -1,7 +1,6 @@
 import os
 import json
 from flask import make_response, jsonify
-from scribe.utils.services.security.encode_payload_service import EncodePayloadService
 
 
 class ValueComposite(object):
@@ -45,12 +44,6 @@ class ValueComposite(object):
 
     def json_response(self, code=200):
         return make_response(jsonify(self.raw), code)
-
-    def encoded_json(self, code=200):
-        encoded_payload = EncodePayloadService(self.raw, os.environ['JWT_SECRET']).call()
-        response = make_response(encoded_payload, code)
-        response.headers['Content-Type'] = 'application/json'
-        return response
 
     @property
     def raw(self):

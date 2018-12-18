@@ -5,12 +5,19 @@ from app.services.opencagedata import GetCoordinatesService
 from app.database import drop_tables
 from app.models import Unbabelite
 from app.finders import UnbabeliteFinder
+from app.values.unbabelite import UnbabelitesValue
 
 
 log = logging.getLogger(__name__)
 
 
 class UnbabelitesHandler(object):
+
+    @staticmethod
+    def get_all():
+        unbabelites = UnbabeliteFinder.get_all()
+
+        return UnbabelitesValue(unbabelites)
 
     @staticmethod
     def populate_unbabelites():
