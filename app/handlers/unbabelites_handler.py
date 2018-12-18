@@ -10,10 +10,10 @@ class UnbabelitesHandler(object):
 
         unbabelites = GetUnbabelitesService().call()
         for unbabelite in unbabelites['employees']:
-            if unbabelite['status'] == 'Active':
+            if unbabelite['status'] in ['Active', '']:
                 unbabelite = {
-                    "employee_id": unbabelite['id'],
-                    "nationality": unbabelite['customNationality'],
+                    "employee_id": unbabelite['employeeNumber'],
+                    "name": f"{unbabelite['firstName']} {unbabelite['lastName']}",
                     "city": unbabelite['city'],
                     "country": unbabelite['country']
                 }

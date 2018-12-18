@@ -92,7 +92,10 @@ def drop_tables():
 @cli.command()
 def populate_unbabelites():
     from app.handlers.unbabelites_handler import UnbabelitesHandler
+    from app.database import drop_tables, create_tables
 
+    drop_tables()
+    create_tables()
     UnbabelitesHandler.populate_unbabelites()
 
 
