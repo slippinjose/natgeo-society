@@ -5,7 +5,7 @@ from app.services.opencagedata import GetCoordinatesService
 from app.database import drop_tables
 from app.models import Unbabelite
 from app.finders import UnbabeliteFinder
-from app.values.unbabelite import UnbabelitesValue
+from app.values.unbabelite import UnbabelitesValue, UnbabelitesGeoJsonValue
 
 
 log = logging.getLogger(__name__)
@@ -18,6 +18,12 @@ class UnbabelitesHandler(object):
         unbabelites = UnbabeliteFinder.get_all()
 
         return UnbabelitesValue(unbabelites)
+
+    @staticmethod
+    def geojson_index():
+        unbabelites = UnbabeliteFinder.get_all()
+
+        return UnbabelitesGeoJsonValue(unbabelites)
 
     @staticmethod
     def populate_unbabelites():
