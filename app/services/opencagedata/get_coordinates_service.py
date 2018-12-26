@@ -11,6 +11,9 @@ class GetCoordinatesService(object):
     def call(self):
         try:
             response = requests.get(self.api_url)
+            if not response.json()['results']:
+                import code; code.interact(local=dict(globals(), **locals()))
+
             coordinates = response.json()['results'][0]['geometry']
 
             return coordinates['lat'], coordinates['lng']

@@ -56,3 +56,16 @@ class UnbabelitesHandler(object):
 
         BulkCreateUnbabelitesService(unbabelites_list).call()
     
+    @staticmethod
+    def redo_coordinates():
+        unbabelites = UnbabeliteFinder.get_all()
+
+        for unbabelite in unbabelites:
+            print(f"Looking at {unbabelite.name}")
+            address = f"{unbabelite.city}, {unbabelite.country}"
+            lat, lng = GetCoordinatesService(address).call()
+            print(f"Got his new coordinates! {lat} - {lng}")
+            unbabelite.lat = lat
+            unbabelite.lng = lng
+            unbabelite.save()
+            print("Saved!")

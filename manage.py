@@ -96,6 +96,12 @@ def populate_unbabelites():
 
     UnbabelitesHandler.populate_unbabelites()
 
+@cli.command()
+def redo_coordinates():
+    from app.handlers.unbabelites_handler import UnbabelitesHandler
+
+    UnbabelitesHandler.redo_coordinates()
+
 
 if __name__ == "__main__":
     cli()
