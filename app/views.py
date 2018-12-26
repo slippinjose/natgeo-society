@@ -33,8 +33,8 @@ def gmaps():
 
 @home_bp.route('/mapbox')
 def mapbox():
-    unbabelites = UnbabelitesHandler.get_all()
+    unbabelites = UnbabelitesHandler.get_all_per_coordinates()
 
     return render_template('mapbox.html',
-                           unbabelites=unbabelites.raw,
+                           unbabelites=unbabelites,
                            mapbox_token=os.environ.get('MAPBOX_API_KEY'))

@@ -145,14 +145,27 @@
             });
 
 
-        unbabelites.forEach(function(unbabelite) {
+        Object.keys(unbabelites).forEach(function(key) {
+            if (unbabelites[key]['unbabelites'].length === 1) {
+                var unbabelite = unbabelites[key]['unbabelites'][0];
+                html = '<h3>' + unbabelite.name + '</h3><p>' + unbabelite.city + ', ' + unbabelite.country + '</p>'
+            }
+            else {
+                html = '<h3>' + unbabelites[key]['unbabelites'][0]['city'] + ', ' + unbabelites[key]['unbabelites'][0]['country'] + '</h3>'
+                html += '<ul>'
+                unbabelites[key]['unbabelites'].forEach(function (unbabelite) {
+                    html += '<li>' + unbabelite.name + '</li>'
+                });
+                html += '</ul>'
+            }
+
             var el = document.createElement('div');
             el.className = 'marker';
-
+            var coordinates = [unbabelites[key]['coordinates']['lng'], unbabelites[key]['coordinates']['lat']]
             new mapboxgl.Marker(el)
-                .setLngLat(unbabelite.coordinates)
+                .setLngLat(coordinates)
                 .setPopup(new mapboxgl.Popup({ offset: 25 })
-                .setHTML('<h3>' + unbabelite.name + '</h3><p>' + unbabelite.city + ', ' + unbabelite.country + '</p>'))
+                .setHTML(html))
                 .addTo(map);
         });
 

@@ -5,13 +5,31 @@ from app.services.opencagedata import GetCoordinatesService
 from app.database import drop_tables
 from app.models import Unbabelite
 from app.finders import UnbabeliteFinder
-from app.values.unbabelite import UnbabelitesValue, UnbabelitesGeoJsonValue
+from app.values.unbabelite import UnbabelitesValue, UnbabelitesGeoJsonValue, UnbabeliteValue
 
 
 log = logging.getLogger(__name__)
 
 
 class UnbabelitesHandler(object):
+
+    @staticmethod
+    def get_all_per_coordinates():
+        unbabelites = UnbabeliteFinder.get_all()
+
+        unbabelites_per_coords = {}
+        for unbabelite in unbabelites:
+            unbabelite_value = UnbabeliteValue(unbabelite).raw
+            if str(unbabelite.coordinates) not in unbabelites_per_coords:
+                unbabelites_per_coords[str(unbabelite.coordinates)] = {
+                    "coordinates": unbabelite.coordinates,
+                    "unbabelites": [unbabelite_value]
+                }
+            else:
+                unbabelites_per_coords[str(unbabelite.coordinates)]['unbabelites'].append(unbabelite_value)
+
+        return unbabelites_per_coords
+
 
     @staticmethod
     def get_all():
