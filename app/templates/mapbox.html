@@ -46,6 +46,7 @@
     <div id='map'></div>
 
     <script>
+        var unbabelites = JSON.parse('{{ unbabelites|tojson }}');
         mapboxgl.accessToken = '{{ mapbox_token }}';
 
         var map = new mapboxgl.Map({
@@ -63,7 +64,7 @@
                 // from 12/22/15 to 1/21/16 as logged by USGS' Earthquake hazards program.
                 data: "/unbabelites",
                 cluster: true,
-                clusterMaxZoom: 6, // Max zoom to cluster points on
+                clusterMaxZoom: 7, // Max zoom to cluster points on
                 clusterRadius: 50 // Radius of each cluster when clustering points (defaults to 50)
             });
 
@@ -127,23 +128,23 @@
 
                 // inspect a cluster on click
                 map.on('click', 'clusters', function (e) {
+                    if (e.features[0].properties.cluster) {
+                        $('.mapboxgl-popup').hide();
+                    }
+
                     var features = map.queryRenderedFeatures(e.point, { layers: ['clusters'] });
                     var clusterId = features[0].properties.cluster_id;
+                    
                     map.getSource('unbabelites').getClusterExpansionZoom(clusterId, function (err, zoom) {
-                        if (err)
-                            return;
-
                         map.easeTo({
                             center: features[0].geometry.coordinates,
                             zoom: zoom
                         });
                     });
                 });
-
-        
             });
 
-        var unbabelites = JSON.parse('{{ unbabelites|tojson }}');
+
         unbabelites.forEach(function(unbabelite) {
             var el = document.createElement('div');
             el.className = 'marker';
@@ -154,8 +155,13 @@
                 .setHTML('<h3>' + unbabelite.name + '</h3><p>' + unbabelite.city + ', ' + unbabelite.country + '</p>'))
                 .addTo(map);
         });
+
+        
     </script>
 
+
+    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha256-3edrmyuQ0w65f8gfBsqowzjJe2iM6n0nKciPUp8y+7E="
+        crossorigin="anonymous"></script>
 </body>
 
 </html>
