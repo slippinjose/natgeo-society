@@ -22,23 +22,14 @@
 
         var map = new mapboxgl.Map({
             container: 'map',
-<<<<<<< HEAD
             style: 'mapbox://styles/ribeiralves/cjptv2z3703p52spafj1ih9pv',
-            center: [-96, 37.8],
-            zoom: 4,
-            minZoom: 2,
-=======
-            style: 'mapbox://styles/mapbox/light-v9',
             center: [5, 28],
             minZoom: 1.5,
             zoom: 1.5
->>>>>>> decdcd62edfdb3a1a6665483d1609cdb1b86c164
         });
 
 
         map.on('load', function () {
-
-<<<<<<< HEAD
             map.setPaintProperty('water', 'fill-color', '#1379ac');
             map.setPaintProperty('background', 'background-color', '#1fad64');
             // map.setPaintProperty('line-color', 'fill', '0');
@@ -61,17 +52,6 @@
                         });
                     });
                 });
-
-=======
-            map.addSource("unbabelites", {
-                type: "geojson",
-                // Point to GeoJSON data. This example visualizes all M1.0+ earthquakes
-                // from 12/22/15 to 1/21/16 as logged by USGS' Earthquake hazards program.
-                data: "/unbabelites",
-                cluster: true,
-                clusterMaxZoom: 7, // Max zoom to cluster points on
-                clusterRadius: 20 // Radius of each cluster when clustering points (defaults to 50)
->>>>>>> decdcd62edfdb3a1a6665483d1609cdb1b86c164
             });
 
             map.loadImage('static/img/hasan1.png', function(error, image) {
