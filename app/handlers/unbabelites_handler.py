@@ -51,12 +51,11 @@ class UnbabelitesHandler(object):
         for unbabelite in unbabelites['employees']:
             if unbabelite['status'] in ['Active', '']:
                 name = f"{unbabelite['firstName']} {unbabelite['lastName']}"
-                address = f"{unbabelite['city']}, {unbabelite['country']}"
+                address = f"{unbabelite['customCityofOrigin']}, {unbabelite['customNationality1']}"
                 unbabelite = {
-                    "employee_id": unbabelite['employeeNumber'],
                     "name": name,
-                    "city": unbabelite['city'],
-                    "country": unbabelite['country'],
+                    "city": unbabelite['customCityofOrigin'],
+                    "country": unbabelite['customNationality1'],
                 }
                 
                 if UnbabeliteFinder.get_from_name(name):

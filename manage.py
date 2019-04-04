@@ -3,6 +3,7 @@ from datetime import datetime
 
 from app import create_app
 
+import csv
 import logging
 import click
 import os
@@ -101,6 +102,37 @@ def redo_coordinates():
     from app.handlers.unbabelites_handler import UnbabelitesHandler
 
     UnbabelitesHandler.redo_coordinates()
+
+
+@cli.command()
+def redo_from_excel():
+    from app.models import Unbabelite
+    from app.services.unbabelites import BulkCreateUnbabelitesService
+    excel_filename = 'natgeo.csv'
+    unbabelites = []
+
+    with open(excel_filename, 'r') as f:
+        reader = csv.DictReader(f)
+        for row in reader:
+            try:
+                name = _get_name(row['Last name, First name'])
+            except:
+                print(f"Couldn't get this person's name: {row['Last name, First name']}")
+                name = "John Doe"
+            unbabelite = {
+                "name": name,
+                "country": row['Country'],
+                "city": row['City of Origin']
+            }
+            unbabelites.append(Unbabelite(**unbabelite))
+
+    BulkCreateUnbabelitesService(unbabelites).call()
+
+
+def _get_name(name):
+    last_name, first_name = name.split(', ')
+    
+    return f"{first_name} {last_name}"
 
 
 if __name__ == "__main__":

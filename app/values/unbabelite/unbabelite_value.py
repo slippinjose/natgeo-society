@@ -11,3 +11,4 @@ class UnbabeliteValue(ValueComposite):
         self.serialize_with(country=unbabelite.country)
         self.serialize_with(city=unbabelite.city)
         self.serialize_with(coordinates=unbabelite.coordinates)
+        self.serialize_with(photo=unbabelite.photo)
