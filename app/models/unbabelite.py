@@ -12,6 +12,8 @@ class Unbabelite(ModelMixin, db.Model):
     lat = db.Column(db.Float, nullable=True)
     lng = db.Column(db.Float, nullable=True)
     photo = db.Column(db.String, nullable=True)
+    team = db.Column(db.String, nullable=True)
+    position = db.Column(db.String, nullable=True)
 
     @property
     def coordinates(self):

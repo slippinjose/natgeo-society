@@ -4,6 +4,7 @@ from datetime import datetime
 from app import create_app
 
 import csv
+import json
 import logging
 import click
 import os
@@ -127,6 +128,25 @@ def redo_from_excel():
             unbabelites.append(Unbabelite(**unbabelite))
 
     BulkCreateUnbabelitesService(unbabelites).call()
+
+
+@cli.command()
+def fill_in_position_and_team():
+    from app.finders import UnbabeliteFinder
+    from app.services.unbabelites import UpdateUnbabeliteProfileService
+    filename = 'natgeo.json'
+
+    with open(filename) as json_file:
+        data = json.load(json_file)
+        for employee in data['employees']:
+            name = _get_name(employee['fullName2'])
+            unbabelite = UnbabeliteFinder.get_from_name(name)
+            
+            if not unbabelite:
+                print(f"Couldn't find {name}")
+            else:
+                UpdateUnbabeliteProfileService(unbabelite, position=employee.get('jobTitle'), team=employee.get('customTribe')).call()
+                print(f"Position and team for {unbabelite.name}: {unbabelite.position}, {unbabelite.team}")
 
 
 def _get_name(name):
