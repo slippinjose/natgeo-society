@@ -1,6 +1,7 @@
 import logging
 
 from flask import Flask, render_template
+from flask_migrate import Migrate
 
 from app.views import home_bp
 from app.database import db
@@ -17,6 +18,7 @@ def create_app(config_name=None):
     env_config.init_app(app)
 
     db.init_app(app)
+    Migrate(app, db)
 
     app.register_blueprint(home_bp)
 
