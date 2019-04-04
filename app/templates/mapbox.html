@@ -3,42 +3,13 @@
 
 <head>
     <meta charset='utf-8' />
-    <title></title>
+    <title>NatGeo</title>
     <meta name='viewport' content='initial-scale=1,maximum-scale=1,user-scalable=no' />
     <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
     <script src='https://api.tiles.mapbox.com/mapbox-gl-js/v0.51.0/mapbox-gl.js'></script>
     <link href='https://api.tiles.mapbox.com/mapbox-gl-js/v0.51.0/mapbox-gl.css' rel='stylesheet' />
-    <style>
-        body {
-            margin: 0;
-            padding: 0;
-        }
-
-        #map {
-            position: absolute;
-            top: 0;
-            bottom: 0;
-            width: 100%;
-        }
-        .marker {
-            /*background-image: url("{{ url_for('static', filename='img/mapbox-icon.png') }}");*/
-            background-size: cover;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            cursor: pointer;
-        }
-
-        .mapboxgl-popup {
-            max-width: 200px;
-        }
-
-        .mapboxgl-popup-content {
-            text-align: center;
-            font-family: 'Open Sans', sans-serif;
-        }
-
-    </style>
+    <link rel="icon" href="{{ url_for('static', filename='img/person.png') }}" type="image/gif" sizes="16x16">
 </head>
 
 <body>
@@ -51,90 +22,30 @@
 
         var map = new mapboxgl.Map({
             container: 'map',
-            style: 'mapbox://styles/mapbox/light-v9',
+            style: 'mapbox://styles/ribeiralves/cjptv2z3703p52spafj1ih9pv',
             center: [-96, 37.8],
-            zoom: 3
+            zoom: 4,
+            minZoom: 2,
         });
+
 
         map.on('load', function () {
 
-            map.addSource("unbabelites", {
-                type: "geojson",
-                // Point to GeoJSON data. This example visualizes all M1.0+ earthquakes
-                // from 12/22/15 to 1/21/16 as logged by USGS' Earthquake hazards program.
-                data: "/unbabelites",
-                cluster: true,
-                clusterMaxZoom: 7, // Max zoom to cluster points on
-                clusterRadius: 50 // Radius of each cluster when clustering points (defaults to 50)
-            });
+            map.setPaintProperty('water', 'fill-color', '#1379ac');
+            map.setPaintProperty('background', 'background-color', '#1fad64');
+            // map.setPaintProperty('line-color', 'fill', '0');
+            //map.setPaintProperty('road', 'line-opacity', '0');
 
+            map.loadImage('static/img/flagpls.png', function(error, image) {
 
-            map.addLayer({
-                    id: "clusters",
-                    type: "circle",
-                    source: "unbabelites",
-                    filter: ["has", "point_count"],
-                    paint: {
-                        // Use step expressions (https://www.mapbox.com/mapbox-gl-js/style-spec/#expressions-step)
-                        // with three steps to implement three types of circles:
-                        //   * Blue, 20px circles when point count is less than 100
-                        //   * Yellow, 30px circles when point count is between 100 and 750
-                        //   * Pink, 40px circles when point count is greater than or equal to 750
-                        "circle-color": [
-                            "step",
-                            ["get", "point_count"],
-                            "#51bbd6",
-                            100,
-                            "#51bbd6",
-                            750,
-                            "#51bbd6"
-                        ],
-                        "circle-radius": [
-                            "step",
-                            ["get", "point_count"],
-                            20,
-                            100,
-                            30,
-                            750,
-                            40
-                        ]
-                    }
-                });
-
-                map.addLayer({
-                    id: "cluster-count",
-                    type: "symbol",
-                    source: "unbabelites",
-                    filter: ["has", "point_count"],
-                    layout: {
-                        "text-field": "{point_count_abbreviated}",
-                        "text-font": ["DIN Offc Pro Medium", "Arial Unicode MS Bold"],
-                        "text-size": 12
-                    }
-                });
-
-                map.addLayer({
-                    id: "unclustered-point",
-                    type: "circle",
-                    source: "unbabelites",
-                    filter: ["!", ["has", "point_count"]],
-                    paint: {
-                        "circle-color": "#11b4da",
-                        "circle-radius": 4,
-                        "circle-stroke-width": 1,
-                        "circle-stroke-color": "#fff"
-                    }
-                });
-
-                // inspect a cluster on click
-                map.on('click', 'clusters', function (e) {
+            // inspect a cluster on click
+            map.on('click', 'clusters', function (e) {
                     if (e.features[0].properties.cluster) {
                         $('.mapboxgl-popup').hide();
                     }
-
                     var features = map.queryRenderedFeatures(e.point, { layers: ['clusters'] });
                     var clusterId = features[0].properties.cluster_id;
-                    
+
                     map.getSource('unbabelites').getClusterExpansionZoom(clusterId, function (err, zoom) {
                         map.easeTo({
                             center: features[0].geometry.coordinates,
@@ -142,21 +53,180 @@
                         });
                     });
                 });
+
             });
+
+            map.loadImage('static/img/hasan1.png', function(error, image) {
+                if (error) throw error;
+                map.addImage('person', image);
+
+                map.addSource("something", {
+                    type: "geojson",
+                    // Point to GeoJSON data. This example visualizes all M1.0+ earthquakes
+                    // from 12/22/15 to 1/21/16 as logged by USGS' Earthquake hazards program.
+                    data: "/unbabelites",
+                    cluster: true,
+                    clusterMaxZoom: 4, // Max zoom to cluster points on
+                    clusterRadius: 50 // Radius of each cluster when clustering points (defaults to 50)
+                });
+
+                map.addLayer({
+                    id: "unclustered-point",
+                    type: "symbol",
+                    source: "something",
+                    filter: ["!", ["has", "point_count"]],
+                    layout: {
+                        "icon-image": "person",
+                        "icon-size": .04,
+                    }
+                });
+            });
+
+
+            map.loadImage('static/img/hasan5.png', function(error, image) {
+                if (error) throw error;
+                map.addImage('people5', image);
+
+                map.addSource("hi", {
+                    type: "geojson",
+                    // Point to GeoJSON data. This example visualizes all M1.0+ earthquakes
+                    // from 12/22/15 to 1/21/16 as logged by USGS' Earthquake hazards program.
+                    data: "/unbabelites",
+                    cluster: true,
+                    clusterMaxZoom: 4, // Max zoom to cluster points on
+                    clusterRadius: 50 // Radius of each cluster when clustering points (defaults to 50)
+                });
+
+                map.addLayer({
+                    id: "unclustered5-point",
+                    type: "symbol",
+                    source: "hi",
+                    filter: ["<", 5, ["get", "point_count"]],
+                    // FIGURE OUT HOW TO GET NUMBER OF PEOPLE
+                    //[">=",  "accumulated", 5],
+                    // ["!", ["has", "point_count"]],
+                    layout: {
+                        "icon-image": "people5",
+                        "icon-size": .04,
+                    }
+                });
+            });
+
+            map.loadImage('static/img/hasan4.png', function(error, image) {
+                if (error) throw error;
+                map.addImage('4people', image);
+
+                map.addSource("4peoplesource", {
+                    type: "geojson",
+                    // Point to GeoJSON data. This example visualizes all M1.0+ earthquakes
+                    // from 12/22/15 to 1/21/16 as logged by USGS' Earthquake hazards program.
+                    data: "/unbabelites",
+                    cluster: true,
+                    clusterMaxZoom: 5, // Max zoom to cluster points on
+                    clusterRadius: 50 // Radius of each cluster when clustering points (defaults to 50)
+                });
+
+                map.addLayer({
+                    id: "4poepleid",
+                    type: "symbol",
+                    source: "hi",
+                    filter: [">", 5, ["get", "point_count"]],
+                    // FIGURE OUT HOW TO GET NUMBER OF PEOPLE
+                    //[">=",  "accumulated", 5],
+                    // ["!", ["has", "point_count"]],
+                    layout: {
+                        "icon-image": "4people",
+                        "icon-size": .04,
+                    }
+                });
+            });
+
+
+            map.loadImage('static/img/hasan3.png', function(error, image) {
+                if (error) throw error;
+                map.addImage('3people', image);
+
+                map.addSource("3peoplesource", {
+                    type: "geojson",
+                    // Point to GeoJSON data. This example visualizes all M1.0+ earthquakes
+                    // from 12/22/15 to 1/21/16 as logged by USGS' Earthquake hazards program.
+                    data: "/unbabelites",
+                    cluster: true,
+                    clusterMaxZoom: 5, // Max zoom to cluster points on
+                    clusterRadius: 50 // Radius of each cluster when clustering points (defaults to 50)
+                });
+
+                map.addLayer({
+                    id: "3poepleid",
+                    type: "symbol",
+                    source: "hi",
+                    filter: [">", 4, ["get", "point_count"]],
+                    // FIGURE OUT HOW TO GET NUMBER OF PEOPLE
+                    //[">=",  "accumulated", 5],
+                    // ["!", ["has", "point_count"]],
+                    layout: {
+                        "icon-image": "3people",
+                        "icon-size": .04,
+                    }
+                });
+            });
+
+            map.loadImage('static/img/hasan2.png', function(error, image) {
+                if (error) throw error;
+                map.addImage('2people', image);
+
+                map.addSource("2peoplesource", {
+                    type: "geojson",
+                    // Point to GeoJSON data. This example visualizes all M1.0+ earthquakes
+                    // from 12/22/15 to 1/21/16 as logged by USGS' Earthquake hazards program.
+                    data: "/unbabelites",
+                    cluster: true,
+                    clusterMaxZoom: 5, // Max zoom to cluster points on
+                    clusterRadius: 50 // Radius of each cluster when clustering points (defaults to 50)
+                });
+
+                map.addLayer({
+                    id: "2poepleid",
+                    type: "symbol",
+                    source: "hi",
+                    filter: [">", 3, ["get", "point_count"]],
+                    // FIGURE OUT HOW TO GET NUMBER OF PEOPLE
+                    //[">=",  "accumulated", 5],
+                    // ["!", ["has", "point_count"]],
+                    layout: {
+                        "icon-image": "2people",
+                        "icon-size": .04,
+                    }
+                });
+            });
+
+        });
 
 
         Object.keys(unbabelites).forEach(function(key) {
             if (unbabelites[key]['unbabelites'].length === 1) {
-                var unbabelite = unbabelites[key]['unbabelites'][0];
-                html = '<h3>' + unbabelite.name + '</h3><p>' + unbabelite.city + ', ' + unbabelite.country + '</p>'
+                var html = '<h3 class="city-title"> <img src="static/img/location.png" class="city-title-image">' + '<b>' + unbabelites[key]['unbabelites'][0]['city'] + '</b>' + ',&nbsp' + '<span class="city-title--small">' + unbabelites[key]['unbabelites'][0]['country'] +  '</span>' + '</h3>';
+                html += '<div class="people-container">'
+                unbabelites[key]['unbabelites'].forEach(function (unbabelite) {
+                    html += '<div class="person"><img src="static/img/cortez.png" class="person-img"><p class="person-name person-name-single">' + unbabelite.name + '</p><p class="person-job">' + 'Developer' + '</p></div>'
+                });
+                html += '</div>'
+            }
+            else if (unbabelites[key]['unbabelites'].length <= 12) {
+                var html = '<h3 class="city-title"> <img src="static/img/location.png" class="city-title-image">' + '<b>' + unbabelites[key]['unbabelites'][0]['city'] + '</b>' + ',&nbsp' + '<span class="city-title--small">' + unbabelites[key]['unbabelites'][0]['country'] +  '</span>' + '</h3>';
+                html += '<div class="people-container">'
+                unbabelites[key]['unbabelites'].forEach(function (unbabelite) {
+                    html += '<div class="person"><img src="static/img/cortez.png" class="person-img"><p class="person-name">' + unbabelite.name + '</p><p class="person-job">' + 'Developer' + '</p></div>'
+                });
+                html += '</div>'
             }
             else {
-                html = '<h3>' + unbabelites[key]['unbabelites'][0]['city'] + ', ' + unbabelites[key]['unbabelites'][0]['country'] + '</h3>'
-                html += '<ul>'
+                var html = '<h3 class="city-title"> <img src="static/img/location.png" class="city-title-image">' + '<b>' + unbabelites[key]['unbabelites'][0]['city'] + '</b>' + ',&nbsp' + '<span class="city-title--small">' + unbabelites[key]['unbabelites'][0]['country'] +  '</span>' + '</h3>';
+                html += '<div class="people-container">'
                 unbabelites[key]['unbabelites'].forEach(function (unbabelite) {
-                    html += '<li>' + unbabelite.name + '</li>'
+                    html += '<div class="person person-small"><img src="static/img/cortez.png" class="person-img"><p class="person-name">' + unbabelite.name + '</p><p class="person-job">' + 'Developer' + '</p></div>'
                 });
-                html += '</ul>'
+                html += '</div>'
             }
 
             var el = document.createElement('div');
@@ -164,12 +234,11 @@
             var coordinates = [unbabelites[key]['coordinates']['lng'], unbabelites[key]['coordinates']['lat']]
             new mapboxgl.Marker(el)
                 .setLngLat(coordinates)
-                .setPopup(new mapboxgl.Popup({ offset: 25 })
+                .setPopup(new mapboxgl.Popup({ offset: 10 })
                 .setHTML(html))
                 .addTo(map);
         });
 
-        
     </script>
 
 

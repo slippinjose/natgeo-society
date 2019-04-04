@@ -1,0 +1,99 @@
+body {
+	margin: 0;
+	padding: 0;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+}
+
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:300,400,700');
+
+#map {
+	position: absolute;
+	top: 0;
+	bottom: 0;
+	width: 100%;
+}
+.marker {
+	/*background-image: url("{{ url_for('static', filename='img/mapbox-icon.png') }}");*/
+	background-size: cover;
+	width: 10px;
+	height: 20px;
+	border-radius: 50%;
+	cursor: pointer;
+}
+
+.mapboxgl-popup {
+	max-width: 600px;
+}
+
+.mapboxgl-popup-content {
+	text-align: center;
+	font-family: 'Open Sans', sans-serif;
+	padding: 15px;
+}
+
+.city-title {
+	font-size: 24px;
+	color: #3953BF;
+	font-family: 'Open Sans', sans-serif;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+
+.city-title--small {
+	font-weight: 300;
+}
+
+.city-title-image {
+	transform: scale(0.8);
+	margin-right: 5px;
+}
+
+.people-container {
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+	justify-content: center;
+	max-height: 400px;
+	overflow: scroll;
+}
+
+.person {
+	width: 80px;
+	padding: 15px;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+}
+
+.person-single {
+	width: 100%;
+}
+
+.person-name {
+	font-size: 16px;
+	font-weight: 600;
+	color: #333333;
+	margin-top: 5px;
+	margin-bottom: 0px;
+}
+
+.person-name-single {
+	white-space: pre;
+}
+
+.person-job {
+	font-size: 14px;
+	color: #778195;
+	margin-top: 5px;
+	margin-bottom: 0px;
+}
+
+.person-img {
+	width: 80px;
+	border: 3px #3953BF solid;
+	border-radius: 1000px
+}
