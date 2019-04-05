@@ -222,7 +222,7 @@
                 var html = '<h3 class="city-title"> <img src="static/img/location.png" class="city-title-image">' + '<b>' + unbabelites[key]['unbabelites'][0]['city'] + '</b>' + ',&nbsp' + '<span class="city-title--small">' + unbabelites[key]['unbabelites'][0]['country'] +  '</span>' + '</h3>';
                 html += '<div class="people-container">'
                 unbabelites[key]['unbabelites'].forEach(function (unbabelite) {
-                    html += '<div class="person person-small"><img src="static/img/cortez.png" class="person-img"><p class="person-name">' + unbabelite.name + '</p><p class="person-job">' + unbabelite.position + '</p></div>'
+                    html += '<div class="person person-small"><img src=' + unbabelite.photo +' class="person-img"><p class="person-name">' + unbabelite.name + '</p><p class="person-job">' + unbabelite.position + '</p></div>'
                 });
                 html += '</div>'
             }
